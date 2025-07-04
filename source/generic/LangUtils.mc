@@ -93,7 +93,7 @@ module LangUtils {
     return aiIndices;
   }
 
-  function readKeyString(_sKey, _sDefault) {
+  function readKeyString(_sKey as Object, _sDefault as String) as String {
     var value = _sKey;
     if(value == null || !(value instanceof Lang.String)) {
       if(value != null) {
