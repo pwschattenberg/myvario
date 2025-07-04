@@ -47,7 +47,7 @@ class MySportsTrackLive {
   public var bLivetrackStateful as Boolean = false;
   public var bWebRequestPending as Boolean = false;
   public var bWrongCredentials = false;
-  public var adPoints as Array<Dictionary>;
+  public var adPoints as Array<Dictionary> = [];
   public var iTrackId as Number = 0;
   public var iCounter as Number = 0;
   public var timeout as Number = 0;
@@ -60,7 +60,6 @@ class MySportsTrackLive {
   function init(_sLoginEmail as String, _sPassword as String) as Void {
     self.sLoginEmail = _sLoginEmail;
     self.sPassword = _sPassword;
-    self.adPoints = [];
   }
 
   function reset() {
