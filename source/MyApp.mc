@@ -130,8 +130,8 @@ class MyApp extends App.AppBase {
   private var iTonesSpeakerTick as Number = 0;
 
   // Tones
-  private var iTones as Number = 0;
-  private var iVibrations as Number =0;
+  private var bTones as Boolean = false;
+  private var bVibrations as Boolean = false;
   private var bSinkToneTriggered as Boolean = false;
 
 
@@ -418,22 +418,24 @@ class MyApp extends App.AppBase {
 
   function unmuteTones() as Void {
     // Enable tones
-    self.iTones = 0;
+    self.bTones = false;
     if(Toybox.Attention has :playTone) {
       if($.oMySettings.bSoundsVariometerTones) {
-        self.iTones = 1;
+        self.bTones = true;
       }
     }
 
+    // Enable vibrations
+    self.bVibrations = false;
     if(Toybox.Attention has :vibrate) {
       if($.oMySettings.bVariometerVibrations) {
-        self.iVibrations = 1;
+        self.bVibrations = true;
       }
     }
 
     // Start tones timer
     // NOTE: For variometer tones, we need a 10Hz <-> 100ms resolution;
-    if(self.iTones || self.iVibrations) {
+    if(self.bTones || self.bVibrations) {
       self.iTonesTick = 1000;
       self.iTonesLastTick = 0;
       self.oTonesTimer = new Timer.Timer();
@@ -448,7 +450,7 @@ class MyApp extends App.AppBase {
     // Medium curve in terms of tone length, pause, and one frequency.
     // Tones need to be more frequent than in GliderSK even at low climb rates to be able to
     // properly map thermals (especially broken up thermals)
-    if(self.iTones || self.iVibrations) {
+    if(self.bTones || self.bVibrations) {
       var fValue = $.oMyProcessing.fVariometer_filtered;
       var bSpeaker = $.oMySettings.iSoundsToneDriver == 1;
       var iDeltaTick = (self.iTonesTick-self.iTonesLastTick) > 8 ? 8 : self.iTonesTick-self.iTonesLastTick;
@@ -456,7 +458,7 @@ class MyApp extends App.AppBase {
       if(fValue >= $.oMySettings.fMinimumClimb) {
         //Sys.println(format("DEBUG: playTone: variometer @ $1$", [self.iTonesTick]));
         var iToneLength = (iDeltaTick > 2) ? iDeltaTick * 50 - 100: 50;
-        if(self.iTones) {
+        if(self.bTones) {
           if (!bSpeaker) { // Buzzer
             if (bVarioDoTick) {
               var iToneFrequency = (400 + fValue * 100) > 1100 ? 1100 : (400 + fValue * 100).toNumber();
@@ -474,7 +476,7 @@ class MyApp extends App.AppBase {
             }
           }
         }
-        if(self.iVibrations && bVarioDoTick) {
+        if(self.bVibrations && bVarioDoTick) {
           var vibeData = [new Attn.VibeProfile(100, (iToneLength > 200) ? iToneLength / 2 : 50)]; //Keeping vibration length shorter than tone for battery and wrist!
           Attn.vibrate(vibeData);
         }
@@ -483,7 +485,7 @@ class MyApp extends App.AppBase {
         }
         return;
       }
-      else if(fValue <= $.oMySettings.fMinimumSink && !self.bSinkToneTriggered && self.iTones) {
+      else if(fValue <= $.oMySettings.fMinimumSink && !self.bSinkToneTriggered && self.bTones) {
         if (!bSpeaker) { // Buzzer
           var toneProfile = [new Attn.ToneProfile(220, 2000)];
           Attn.playTone({:toneProfile=>toneProfile});
