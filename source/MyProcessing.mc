@@ -408,7 +408,7 @@ class MyProcessing {
 
           //Attempt to update position
           if($.oMyLivetrack24.bLivetrackStateful && ($.oMyLivetrack24.iCounter % $.oMySettings.iLivetrack24FrequencySeconds) == 0) {
-            $.oMyLivetrack24.updateSession(adPositionDegrees[0], adPositionDegrees[1], self.fAltitude.toNumber(), (self.fGroundSpeed * 3.6f).toNumber(), iLivetrackHeading, self.iGpsTime);
+            $.oMyLivetrack24.updateSession(adPositionDegrees[0].toFloat(), adPositionDegrees[1].toFloat(), self.fAltitude.toNumber(), (self.fGroundSpeed * 3.6f).toNumber(), iLivetrackHeading, self.iGpsTime);
           }
           $.oMyLivetrack24.iCounter++;
         }
@@ -433,12 +433,12 @@ class MyProcessing {
 
           //Attempt to start the livetrack session and get Track Id
           if(!$.oMySportsTrackLive.sSessionToken.equals("") && !$.oMySportsTrackLive.bWebRequestPending && !$.oMySportsTrackLive.bWrongCredentials && !$.oMySportsTrackLive.bLivetrackStateful) {
-            $.oMySportsTrackLive.startSession(adPositionDegrees[0], adPositionDegrees[1], self.fAltitude.toNumber(), self.fGroundSpeed.toNumber(), iLivetrackHeading);
+            $.oMySportsTrackLive.startSession(adPositionDegrees[0].toFloat(), adPositionDegrees[1].toFloat(), self.fAltitude.toNumber(), self.fGroundSpeed.toNumber(), iLivetrackHeading);
           }
 
           //Attempt to update position
           if($.oMySportsTrackLive.bLivetrackStateful) {
-            $.oMySportsTrackLive.addPoint(adPositionDegrees[0], adPositionDegrees[1], self.fAltitude.toNumber(), self.fGroundSpeed.toNumber(), iLivetrackHeading);
+            $.oMySportsTrackLive.addPoint(adPositionDegrees[0].toFloat(), adPositionDegrees[1].toFloat(), self.fAltitude.toNumber(), self.fGroundSpeed.toNumber(), iLivetrackHeading);
             if(($.oMySportsTrackLive.iCounter % $.oMySettings.iSportsTrackLiveFrequencySeconds) == 0) {
               $.oMySportsTrackLive.updateSession();
               $.oMySportsTrackLive.adPoints = new Array<Dictionary>[$.oMySettings.iSportsTrackLiveFrequencySeconds];
