@@ -63,7 +63,7 @@ class MyLivetrack24 {
   }
 
   function reset() {
-    self.iSessionId = 1;
+    self.iSessionId = 1l;
     self.bWrongCredentials = false;
     self.iCounter = 0;
     self.iPacketNumber = 0;
