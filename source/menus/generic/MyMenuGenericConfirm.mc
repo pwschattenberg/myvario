@@ -90,7 +90,7 @@ class MyMenuConfirmDiscardDelegate extends Ui.InputDelegate {
   }
 }
 
-class MyMenuGenericConfirmDelegate extends Ui.MenuInputDelegate {
+class MyMenuGenericConfirmDelegate extends Ui.ConfirmationDelegate {
 
   private var context as Symbol = :contextNone;
   private var action as Symbol = :actionNone;
