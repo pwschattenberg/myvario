@@ -100,8 +100,8 @@ class MyProcessing {
   public var bWindValid as Boolean = false;
   public var cWindSpeedColor as Number = 0;
   // ... circling
-  public var bCirclingCount as Number = 0;
-  public var bNotCirclingCount as Number = 0;
+  public var iCirclingCount as Number = 0;
+  public var iNotCirclingCount as Number = 0;
   public var bIsPreviousGeneral as Boolean = true;
   public var bAutoThermalTriggered as Boolean = false;
   public var iCirclingStartEpoch as Number = 0;
@@ -339,13 +339,13 @@ class MyProcessing {
     }
     
     // ... circling Auto Switch
-    if($.oMySettings.bVariometerAutoThermal && !self.bAutoThermalTriggered && self.bCirclingCount >=5) {
+    if($.oMySettings.bVariometerAutoThermal && !self.bAutoThermalTriggered && self.iCirclingCount >= 5) {
       self.bAutoThermalTriggered = true;
       Ui.switchToView(new MyViewVarioplot(),
                 new MyViewVarioplotDelegate(),
                 Ui.SLIDE_IMMEDIATE);
     }
-    if($.oMySettings.bVariometerAutoThermal && self.bAutoThermalTriggered && self.bNotCirclingCount >=20) {
+    if($.oMySettings.bVariometerAutoThermal && self.bAutoThermalTriggered && self.iNotCirclingCount >= 20) {
       self.bAutoThermalTriggered = false;
       if(self.bIsPreviousGeneral) {
         Ui.switchToView(new MyViewGeneral(),
@@ -457,7 +457,7 @@ class MyProcessing {
         
         if($.oMySettings.bVariometerThermalDetect) {
           // Thermal core detector
-          var iWeightedSum= 0 as Number;
+          var iWeightedSum = 0 as Number;
           var fWeightedMeanLongitude = 0.0f as Float;
           var fWeightedMeanLongitudeOld = 0.0f as Float;
           var fWeightedSLongitude = 0.0f as Float;
@@ -645,7 +645,7 @@ class MyProcessing {
         self.iWindSectorCount -= 1;
     } else if (self.iWindOldSector == self.iWindSector) {
         // Same sector
-        self.bNotCirclingCount += 1;
+        self.iNotCirclingCount += 1;
     } else {
         // Turning in new direction or more than 360/num of sectors, discard data
         self.iWindSectorCount = 0;
@@ -658,8 +658,8 @@ class MyProcessing {
     var iMax = 0;
     // Sys.println(format("DEBUG: Number of wind sectors ~ $1$", [self.iWindSectorCount]));
     if(self.iWindSectorCount.abs() >= self.DIRECTION_NUM_OF_SECTORS) {
-      if(self.bCirclingCount >= 5) { self.bNotCirclingCount = 0; } //Definitely circling
-      self.bCirclingCount += 1;
+      if(self.iCirclingCount >= 5) { self.iNotCirclingCount = 0; } //Definitely circling
+      self.iCirclingCount += 1;
       for(var i = 1; i < self.DIRECTION_NUM_OF_SECTORS; i++) {
         if(self.afSpeed[i] > self.afSpeed[iMax]) { iMax = i; }
         if(self.afSpeed[i] < self.afSpeed[iMin]) { iMin = i; }
@@ -677,8 +677,8 @@ class MyProcessing {
       }
     }
     else {
-      if(self.bNotCirclingCount >= 20) { self.bCirclingCount = 0; } //No longer circling
-      bNotCirclingCount += 1;
+      if(self.iNotCirclingCount >= 20) { self.iCirclingCount = 0; } //No longer circling
+      iNotCirclingCount += 1;
     }
   }
 

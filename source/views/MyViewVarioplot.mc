@@ -384,7 +384,7 @@ class MyViewVarioplot extends MyViewHeader {
     _oDC.setColor(self.iColorText, Gfx.COLOR_TRANSPARENT);
 
     // ... thermal info
-    if ($.oMyProcessing.bCirclingCount >= 5) {
+    if ($.oMyProcessing.iCirclingCount >= 5) {
       // Draw thermal time
       var iThermalTime = Time.now().value() - $.oMyProcessing.iCirclingStartEpoch;
       var iThermalTimeMinutes = iThermalTime / 60;
